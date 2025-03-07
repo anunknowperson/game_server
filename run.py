@@ -310,7 +310,10 @@ async def handle_connection(websocket):
     peer_id = random_id()
     peer = Peer(peer_id, websocket)
     
-    # Set a timeout for joining a lobby
+    # Send an initial ID message to allow client to proceed
+    await websocket.send(create_message(CMD.ID, peer_id, "true"))
+    
+    # Set a timeout for joining a lobby - increase timeout to give user more time
     peer.lobby_timeout = asyncio.create_task(no_lobby_timeout(peer))
     
     logger.info(f"New connection from peer {peer_id}")

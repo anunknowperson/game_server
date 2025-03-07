@@ -241,8 +241,8 @@ async def handle_join(peer, lobby_name, use_mesh):
             raise ValueError(STR_TOO_MANY_LOBBIES)
         
         lobby_name = random_secret()
-        # Default max players is 4 when creating a new lobby
-        max_players = 4
+        # Get max_players from the message if provided (as part of the join data)
+        max_players = msg_id if msg_id > 0 else 4
         lobbies[lobby_name] = Lobby(lobby_name, peer.id, peer, max_players, use_mesh)
         logger.info(f"Peer {peer.id} created lobby {lobby_name} with max {max_players} players")
         logger.info(f"Open lobbies: {len(lobbies)}")

@@ -178,6 +178,7 @@ lobbies = {}
 
 async def parse_message(peer, message):
     """Parse and handle incoming messages."""
+    logger.info(f"Received message from peer {peer.id}: {message}")
     try:
         msg = json.loads(message)
         
@@ -315,7 +316,9 @@ async def handle_connection(websocket):
     logger.info(f"New connection from peer {peer_id}")
     
     try:
+        logger.info(f"Waiting for messages from peer {peer_id}")
         async for message in websocket:
+            logger.info(f"Processing message from peer {peer_id}: {message}")
             try:
                 await parse_message(peer, message)
             except ValueError as e:
